@@ -110,18 +110,19 @@
           } else {
             $slide
               .stop()
-              .fadeOut(fadeTime, function () {
+              .not(':eq(' + idx + ')')
+              .fadeTo(fadeTime, 0, function () {
                 $(this)
-                  .removeClass(visibleClass)
                   .css(hidden)
-                  .css("opacity", 1);
+                  .removeClass(visibleClass);
               })
+              .end()
               .eq(idx)
-              .fadeIn(fadeTime, function () {
+              .css('opacity', 0)
+              .fadeTo(fadeTime, 1, function () {
                 $(this)
-                  .addClass(visibleClass)
-                  .css(visible);
-                settings.after();
+                  .css(visible)
+                  .addClass(visibleClass);
                 index = idx;
               });
           }
@@ -150,12 +151,11 @@
 
       // Hide all slides, then show first one
       $slide
-        .hide()
+        .show()
         .css(hidden)
         .eq(0)
         .addClass(visibleClass)
-        .css(visible)
-        .show();
+        .css(visible);
 
       // CSS transitions
       if (supportsTransitions) {
@@ -230,6 +230,10 @@
 
           startCycle = function () {
             rotate = setInterval(function () {
+
+              if ($this.hasClass('paused')) {
+                return;
+              }
 
               // Clear the event queue
               $slide.stop(true, true);
