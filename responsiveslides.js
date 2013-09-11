@@ -1,4 +1,4 @@
-/*! ResponsiveSlides.js v1.53
+/*! ResponsiveSlides.js v1.53-admituw
  * http://responsiveslides.com
  * http://viljamis.com
  *
@@ -27,8 +27,9 @@
       "navContainer": "",       // Selector: Where auto generated controls should be appended to, default is after the <ul>
       "manualControls": "",     // Selector: Declare custom pager navigation
       "namespace": "rslides",   // String: change the default namespace used
-      before: function () {},   // Function: Before callback
-      after: function () {}     // Function: After callback
+      "useTransitions": true,   // Boolean: Set CSS transition styles
+      "before": $.noop,         // Function: Before callback
+      "after": $.noop           // Function: After callback
     }, options);
 
     return this.each(function () {
@@ -159,7 +160,7 @@
         .css(visible);
 
       // CSS transitions
-      if (supportsTransitions) {
+      if (supportsTransitions && settings.useTransitions) {
         $slide
           .show()
           .css({
